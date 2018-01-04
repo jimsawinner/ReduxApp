@@ -1,23 +1,29 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+var React = require('react-native');
+var { AppRegistry, StyleSheet, Text, View } = React;
+var Login = require('./app/components/Login');
+var userReducers = require('./app/reducers/user');
 
-export default class App extends React.Component {
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux/native';
+
+let store = createStore(combineReducers({userReducers}));
+
+class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      <Login />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+class MyApp extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        {() => <App />}
+      </Provider>
+    );
+  }
+}
+
+AppRegistry.registerComponent('MyApp', () => MyApp);
